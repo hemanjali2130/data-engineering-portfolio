@@ -1,0 +1,20 @@
+# Generated sample data and local platform state
+**/landing/
+**/checkpoints/
+**/__pycache__/
+*.py[cod]
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+service-account*.json
+
+# Editor and operating-system files
+.DS_Store
+.vscode/
+.idea/
