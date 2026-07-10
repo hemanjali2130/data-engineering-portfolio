@@ -57,21 +57,19 @@ USE ROLE DE_ENGINEER;
 SELECT CUSTOMER_ID, EMAIL, PHONE FROM STAGING.DIM_CUSTOMER LIMIT 5;  -- clear
 USE ROLE ACCOUNTADMIN;
 
--- ---- 4. Time Travel ----
-UPDATE STAGING.DIM_CUSTOMER SET CITY = 'OOPS' WHERE CUSTOMER_ID = 'C000001';
-SELECT CITY FROM STAGING.DIM_CUSTOMER AT(OFFSET => -60)   -- 1 minute ago
-WHERE CUSTOMER_ID = 'C000001';                             -- original value
--- restore:
-UPDATE STAGING.DIM_CUSTOMER d
-SET CITY = h.CITY
-FROM (SELECT CUSTOMER_ID, CITY FROM STAGING.DIM_CUSTOMER AT(OFFSET => -60)
-      WHERE CUSTOMER_ID = 'C000001') h
-WHERE d.CUSTOMER_ID = h.CUSTOMER_ID;
+-- ---- 4. Time Travel (safe, isolated demonstration table) ----
+-- Keep resilience demos away from the live dimension and fact tables.
+CREATE OR REPLACE TABLE ANALYTICS.TIME_TRAVEL_DEMO AS
+SELECT 'C000001' AS CUSTOMER_ID, 'before_change' AS DEMO_VALUE;
+UPDATE ANALYTICS.TIME_TRAVEL_DEMO SET DEMO_VALUE = 'after_change';
+SELECT * FROM ANALYTICS.TIME_TRAVEL_DEMO AT(OFFSET => -60);  -- before_change
 
-DROP TABLE ANALYTICS.FACT_ORDERS;
-UNDROP TABLE ANALYTICS.FACT_ORDERS;    -- back instantly; screenshot this
+DROP TABLE ANALYTICS.TIME_TRAVEL_DEMO;
+UNDROP TABLE ANALYTICS.TIME_TRAVEL_DEMO;    -- back instantly; screenshot this
+DROP TABLE ANALYTICS.TIME_TRAVEL_DEMO;      -- optional cleanup
 
 -- ---- 5. Zero-copy clone: instant, storage-free dev environment ----
+DROP DATABASE IF EXISTS RETAIL_DW_DEV;      -- disposable project sandbox only
 CREATE DATABASE RETAIL_DW_DEV CLONE RETAIL_DW;
 -- prove isolation: change dev, prod untouched
 UPDATE RETAIL_DW_DEV.STAGING.DIM_CUSTOMER SET CITY='DEVTEST' WHERE CUSTOMER_ID='C000002';

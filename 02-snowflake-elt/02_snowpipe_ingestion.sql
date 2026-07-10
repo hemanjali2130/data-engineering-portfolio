@@ -63,9 +63,9 @@ SHOW PIPES IN SCHEMA RAW;
 --   prefix snowflake/customers/ events: all object create  -> SQS ARN of PIPE_CUSTOMERS
 
 -- ---- VERIFY (PLAN.md acceptance) ----
--- Drop increments/orders_batch1.csv into s3://<BUCKET>/snowflake/orders/, wait ~60s:
+-- Drop an incremental orders file into s3://<BUCKET>/snowflake/orders/, wait ~60s:
 SELECT SYSTEM$PIPE_STATUS('RETAIL_DW.RAW.PIPE_ORDERS');   -- executionState RUNNING
-SELECT COUNT(*) FROM RAW.ORDERS_RAW;                       -- 525,000 after batch 1
+SELECT COUNT(*) FROM RAW.ORDERS_RAW;                       -- baseline + increment rows
 
 SELECT FILE_NAME, ROW_COUNT, LAST_LOAD_TIME
 FROM TABLE(INFORMATION_SCHEMA.COPY_HISTORY(

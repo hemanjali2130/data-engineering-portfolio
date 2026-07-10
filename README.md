@@ -7,7 +7,7 @@ quality controls, dimensional modelling, orchestration, and governance.
 | # | Project | Stack | Status |
 |---|---|---|---|
 | 01 | Retail Clickstream Lakehouse | Databricks, PySpark, Delta Lake, Auto Loader, Unity Catalog | **Built and verified on Databricks Free Edition** |
-| 02 | Governed Snowflake Warehouse | Snowflake, Snowpipe, Streams & Tasks, RBAC, masking | Implementation kit ready; requires Snowflake account |
+| 02 | Governed Snowflake Warehouse | Snowflake, AWS S3, Snowpipe, Streams & Tasks, RBAC, masking | **Built and verified on Snowflake Trial + AWS** |
 | 03 | Azure ETL Pipeline | ADF, Azure SQL, T-SQL MERGE SCD2, DQ gates | Implementation kit ready; requires Azure subscription |
 
 ## Verified Databricks delivery
@@ -25,6 +25,24 @@ retries at one-minute intervals per task. A complete verification run succeeded:
 
 See [the verified run record](01-databricks-lakehouse/RUN_STATUS.md) and
 [workflow/governance notes](01-databricks-lakehouse/04_workflow_and_governance.md).
+
+## Verified Snowflake delivery
+
+The governed warehouse is running with AWS S3 event-driven Snowpipe ingestion,
+append-only raw landing tables, Streams & Tasks, an SCD Type 2 customer dimension,
+and idempotent order upserts. A controlled incremental test completed successfully:
+
+| Check | Result |
+|---|---:|
+| Synthetic customers ingested | 50,002 |
+| Synthetic orders ingested | 500,110 |
+| Analytics fact rows | 500,110 |
+| Task chain | Dimension and fact tasks succeeded |
+| SCD Type 2 evidence | `C000001`: Denver version closed; Seattle version current |
+| Governance validation | Analyst role returned masked email and phone values |
+
+See [the verified Snowflake run record](02-snowflake-elt/RUN_STATUS.md) and the
+[implementation plan](02-snowflake-elt/PLAN.md).
 
 ## Repository hygiene
 
