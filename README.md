@@ -1,14 +1,15 @@
 # Data Engineering Portfolio — Hemanjali Buchireddy
 
-Three end-to-end data engineering projects covering the same core patterns across
-Databricks, Snowflake, and Azure: incremental ingestion, layered transformations,
-quality controls, dimensional modelling, orchestration, and governance.
+Four portfolio projects spanning data engineering and VLM evaluation: incremental
+ingestion, layered transformations, quality controls, dimensional modelling,
+orchestration, governance, and reproducible benchmark analysis.
 
 | # | Project | Stack | Status |
 |---|---|---|---|
 | 01 | Retail Clickstream Lakehouse | Databricks, PySpark, Delta Lake, Auto Loader, Unity Catalog | **Built and verified on Databricks Free Edition** |
 | 02 | Governed Snowflake Warehouse | Snowflake, AWS S3, Snowpipe, Streams & Tasks, RBAC, masking | **Built and verified on Snowflake Trial + AWS** |
 | 03 | Azure ETL Pipeline | ADF, Azure SQL, T-SQL MERGE SCD2, DQ gates | Implementation kit ready; requires Azure subscription |
+| 04 | VLM Visualization Literacy Evaluation | Python, GPT-5.4, OpenAI API, ChartX, evaluation pipeline | Report-backed graduate capstone; source code is maintained separately |
 
 ## Verified Databricks delivery
 
@@ -43,6 +44,13 @@ and idempotent order upserts. A controlled incremental test completed successful
 
 See [the verified Snowflake run record](02-snowflake-elt/RUN_STATUS.md) and the
 [implementation plan](02-snowflake-elt/PLAN.md).
+
+## VLM visualization literacy capstone
+
+This report-backed graduate capstone evaluates GPT-5.4 on 6,000 ChartX chart images
+covering 18 chart types and 22 domains. The co-authored report documents deterministic
+evaluation, cached API responses, automated scoring, an 85.7% two-dimensional result,
+and a 59.3% result for 3D bar charts. See the [project summary](04-vlm-visualization-literacy/README.md).
 
 ## Repository hygiene
 
